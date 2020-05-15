@@ -14,4 +14,19 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+
+  <script>
+
+  (function f() {
+    const isMobileAgent_Re = [/(iPad).*OS\s([\d_]+)/,/(iPhone\sOS)\s([\d_]+)/,/(Android)\s+([\d.]+)/];
+    const ua = navigator.userAgent
+
+    for(let item of isMobileAgent_Re){
+      if(ua.match(item)){
+        window.isMobile = true
+        break
+      }
+    }
+  })()
+  </script>
 </html>
