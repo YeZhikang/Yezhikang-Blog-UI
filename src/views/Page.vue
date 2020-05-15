@@ -16,17 +16,19 @@
                 <input class="search-input" type="text" placeholder="点击此处来进行搜索" v-model="text">
                 <h3>{{resultNum}}</h3>
             </div>
-            <div class="searchedRes" style="min-height: 150px" v-if="resultNum">
-                <div @click="turnToArticles(articleRes.urlHash)" v-for="(articleRes,index) in articles" :key="index" class="searchedUnit">
-                    <img class="cover" :src="pngCate[articleRes.category]">
-                    <div class="title-continue-isnew">
-                        <div class="title-continue">
-                            <h2>{{articleRes.file}}</h2>
-                            <p>{{articleRes.time | changeToMDY}}</p>
+            <div class="searchedRes articles-area" style="min-height: 150px" >
+                <template v-if="resultNum">
+                    <div @click="turnToArticles(articleRes.urlHash)" v-for="(articleRes,index) in articles" :key="index" class="searchedUnit">
+                        <img class="cover" :src="pngCate[articleRes.category]">
+                        <div class="title-continue-isnew">
+                            <div class="title-continue">
+                                <h2>{{articleRes.file}}</h2>
+                                <p>{{articleRes.time | changeToMDY}}</p>
+                            </div>
+                            <div class="isnew" style="min-width: 48px"><el-tag type="warning" v-if="isNew(articleRes.time)">New</el-tag></div>
                         </div>
-                        <div class="isnew" style="min-width: 48px"><el-tag type="warning" v-if="isNew(articleRes.time)">New</el-tag></div>
                     </div>
-                </div>
+                </template>
             </div>
             <div class="searchedRes" style="min-height: 150px" v-if="!resultNum">
                 <h2 style="font-size: 20px;font-weight: 500;color: #757575">No Results</h2>
@@ -82,6 +84,13 @@ export default {
     computed:{
         resultNum(){
             return this.articles.length
+        },
+        isDark(){
+            if(document.body.classList.contains('dark')){
+                return 'rgba(0,0,0,0.1)'
+            }else{
+                return 'rgba(255,255,255,0.4)'
+            }
         }
     },
     methods:{
@@ -106,13 +115,16 @@ export default {
             }
         },
         getArticles(activeLabels,text){
-            let loadingInstance1 = Loading.service({ target: ".searchedRes" });
-            this.$axios.post('/getArticles',{activeLabels: activeLabels,text:text}).then(res => {
-                console.log(res.data.articles)
-                this.articles = res.data.articles.reverse()
-                loadingInstance1.close()
-            }).catch(error => {
-                console.log(error)
+            this.$nextTick(() => {
+                let loadingInstance1 = Loading.service({ target: ".articles-area",background: this.isDark });
+
+                this.$axios.post('/getArticles',{activeLabels: activeLabels,text:text}).then(res => {
+                    console.log(res.data.articles)
+                    this.articles = res.data.articles.reverse()
+                    loadingInstance1.close()
+                }).catch(error => {
+                    console.log(error)
+                })
             })
         },
 

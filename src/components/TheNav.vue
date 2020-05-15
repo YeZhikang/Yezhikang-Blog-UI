@@ -9,17 +9,8 @@
                 <li v-if="!isMobile">
                     <h3>
                         <router-link
-                                :to="{name: 'me'}"
-                                :class="{navActive:isActive[0], 'nav-link': true}"
-                        >About Me
-                        </router-link>
-                    </h3>
-                </li>
-                <li v-if="!isMobile">
-                    <h3>
-                        <router-link
-                            :to="{name: 'pages'}"
-                            :class="{navActive:isActive[1], 'nav-link': true}"
+                                :to="{name: 'pages'}"
+                                :class="{navActive:isActive[1], 'nav-link': true}"
                         >Articles
                         </router-link>
                     </h3>
@@ -27,10 +18,20 @@
                 <li v-if="!isMobile">
                     <h3>
                         <router-link
-                                :to="{name: 'contact'}"
+                                :to="{name: 'idea'}"
                                 :class="{navActive:isActive[2], 'nav-link': true}"
                         >
-                            Contact <i class="el-icon-paperclip"></i></router-link>
+                            Idea
+                        </router-link>
+                    </h3>
+                </li>
+                <li v-if="!isMobile">
+                    <h3>
+                        <router-link
+                                :to="{name: 'me'}"
+                                :class="{navActive:isActive[0], 'nav-link': true}"
+                        >About Me
+                        </router-link>
                     </h3>
                 </li>
                 <li>
@@ -99,7 +100,7 @@ export default {
     watch: {
         $route: {
             handler: function (val) {
-                if (val.name === "blogIndex") {
+                if (val.name === "Home") {
                     this.isActive = [false, false, false]
                 } else if (val.name === "write") {
                     this.isActive = [false, false, false]
@@ -107,7 +108,7 @@ export default {
                     this.isActive = [false, true, false]
                 } else if (val.name === "me") {
                     this.isActive = [true, false, false]
-                } else if (val.name === "contact") {
+                } else if (val.name === "idea") {
                     this.isActive = [false, false, true]
                 }
             },

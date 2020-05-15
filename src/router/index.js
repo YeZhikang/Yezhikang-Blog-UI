@@ -5,7 +5,6 @@ import Article from "../views/Article";
 
 
 import Page from "../views/Page";
-import ContactMe from "../views/ContactMe";
 import AboutMe from "../views/AboutMe";
 import GuessNumber from "../views/GuessNumber";
 import AllNews from "../views/int-management-homework/AllNews";
@@ -13,6 +12,7 @@ import BackGround from "../views/int-management-homework/BackGround";
 import FrontGround from "../views/int-management-homework/FrontGround";
 import EditNews from "../views/int-management-homework/EditNews";
 import CreateNews from "../views/int-management-homework/CreateNews";
+import Idea from "../views/Idea";
 
 Vue.use(VueRouter)
 
@@ -33,9 +33,9 @@ const routes = [
         component: Page
     },
     {
-        path: '/contact',
-        name: 'contact',
-        component: ContactMe
+        path: '/idea',
+        name: 'idea',
+        component: Idea
     },
     {
         path: '/me',

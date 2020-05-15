@@ -81,4 +81,7 @@ body.dark{
   .index-link:hover{
     color: #ff9089;
   }
+  tr:nth-child(even),thead{
+    background-color: transparent;
+  }
 }

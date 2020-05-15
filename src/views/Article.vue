@@ -69,10 +69,19 @@ export default {
             }
         }
     },
-    created() {
+    computed:{
+        isDark(){
+            if(document.body.classList.contains('dark')){
+                return 'rgba(0,0,0,0.1)'
+            }else{
+                return 'rgba(255,255,255,0.4)'
+            }
+        }
+    },
+    mounted() {
         let hash = this.$route.params.hash;
         console.log(hash);
-        let loadingInstance1 = Loading.service({ target: ".main" });
+        let loadingInstance1 = Loading.service({ background: this.isDark });
         this.$axios.post('/getmd',{hash}).then(res => {
             this.mdHtml = this.$marked(res.data.text);
             this.title = res.data.file;
