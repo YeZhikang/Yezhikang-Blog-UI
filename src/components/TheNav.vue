@@ -74,7 +74,6 @@ export default {
                     removeEventListener("scroll", func1, false)
                 } else {
                     this.isMobile = false
-                    toA.classList.add('shadow-box')
 
                     addEventListener('scroll', func1, false);
                 }

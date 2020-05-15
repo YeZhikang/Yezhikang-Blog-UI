@@ -6,7 +6,7 @@
           <h1>Hey,我是叶志康</h1>
           <p>我是一个前端开发者，爱好编程。对 <code class="pjfont">JavaScript</code> , <code class="pjfont">Python</code> , <code class="pjfont">Node.js</code> 很感兴趣。</p>
           <div style="margin-top: 24px">
-            <el-button class="index-button index-button--primary" @click="urlRedirect({name:'MobileIndex'})" type="primary" size="mini">Articles</el-button>
+            <el-button class="index-button index-button--primary" @click="urlRedirect({name:'pages'})" type="primary" size="mini">Articles</el-button>
             <el-button class="index-button index-button--warning" type="warning" size="mini" @click="urlRedirect({name:'me'})">About Me</el-button>
           </div>
         </div>
