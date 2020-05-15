@@ -152,11 +152,6 @@ export default {
             immediate:true
         }
     },
-    filters:{
-        changeToMDY(value){
-            return new Date(value).toString().split(" ").slice(0,4).join(" ")
-        }
-    },
     created(){
         document.title = "博客清单"
     },

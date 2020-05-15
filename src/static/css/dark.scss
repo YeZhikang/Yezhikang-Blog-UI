@@ -84,4 +84,15 @@ body.dark{
   tr:nth-child(even),thead{
     background-color: transparent;
   }
+
+  .tag-icon{
+    color: #5f85ac;
+    z-index: 99;
+    background-color:  #282c35;
+    padding: 2px 0 4px 0;
+  }
+  .input-area /deep/ .el-textarea__inner{
+    background-color: transparent;
+    color: white;
+  }
 }

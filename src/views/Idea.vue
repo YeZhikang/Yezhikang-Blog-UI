@@ -1,15 +1,239 @@
 <template>
-    <div>
+    <div class="main-body">
+        <div class="main-body__head">
+            <h1 class="main-body__title">Idea</h1>
+            <p>记录每天的思考/想法/计划</p>
+        </div>
+        <div class="main-body__body">
+            <div class="body__recent" v-for="active in actives" :key="active.activeId">
+                <div class="main-body__body__avator"></div>
+                <div class="main-body__body__message">
+                    <h4 class="message__title" v-html="active.titleHtml"></h4>
+                    <p class="message__text" v-html="active.main"></p>
+                </div>
+                <el-popover
+                    v-if="!isFinished(active)"
+                    placement="top"
+                    width="250"
+                    v-model="active.visible">
+                    <p>添加动态</p>
+                    <el-radio-group v-model="tagInfo.type">
+                        <el-radio size="mini" label="comment">评论</el-radio>
+                        <el-radio size="mini" label="finished">完成</el-radio>
+                        <el-radio size="mini" label="marked">标记</el-radio>
+                        <el-radio size="mini" label="minus">调整</el-radio>
+                    </el-radio-group>
+                    <el-input style="margin: 6px 0" type="textarea" placeholder="添加信息" v-model="tagInfo.text"></el-input>
+                    <div style="text-align: right; margin: 0">
+                        <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+                        <el-button type="primary" size="mini" @click="handleSubmitTag(active.activeId)">确定</el-button>
+                    </div>
+                    <div  slot="reference" class="main-body__body__mark">
+                        <i class="el-icon-circle-plus-outline"></i>
+                    </div>
+                </el-popover>
 
+                <div class="main-body__body__mark" v-else>
+                    <i class="el-icon-circle-check" ></i>
+                </div>
+                <the-tags :activesArr="active.tagArr"/>
+            </div>
+        </div>
+        <div class="main-body__foot">
+            <el-input
+                    class="input-area"
+                    :autosize="{ minRows: 4, maxRows: 6}"
+                    type="textarea"
+                    v-model="textContext"
+            ></el-input>
+            <el-button type="primary" style="margin-top: 15px;float: right" class="index-button--primary" size="mini" @click="handleSubmit">确 定</el-button>
+        </div>
+        <the-footer/>
     </div>
 </template>
 
 <script>
+import TheTags from "../components/TheTags";
+
+
 export default {
-    name: "Idea"
+    name: "Idea",
+    components: { TheTags },
+    data() {
+        return {
+            textContext: '',
+            tagInfo: {
+                type: '',
+                text: ''
+            },
+            actives:[
+                {
+                    activeId: 'sdasasdas',
+                    topicArr: '<i>#scscaseo#</i>,<i>#scscaseo#</i>',
+                    titleHtml: '',
+                    text: 'scooooooppaaa',
+                    tagArr: [
+                        {
+                            type: '',
+                            text: ''
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    computed: {},
+    methods: {
+        async handleSubmit() {
+            await this.$axios.post('http://127.0.0.1:5000/setActive', { textContext: this.textContext,createdAt: new Date().toLocaleDateString() })
+        },
+        async getAllActives(){
+            const res = await this.$axios.get('http://127.0.0.1:5000/getActive')
+            const dataSource = res.data.doc
+
+            for(let item of dataSource){
+                console.log(item.topicLst)
+                item.titleHtml = item.topicLst.map(i => `<i style="color:#ff9089 ">${i}</i>`).join(',')
+                item.visible = false
+            }
+            this.actives = dataSource
+        },
+        isFinished(active){
+            if(!active.tagArr) return false
+            for(let item of active.tagArr){
+                if(item.type === 'finished'){
+                    return true
+                }
+            }
+            return false
+        },
+        async handleSubmitTag(activeId){
+            await this.$axios.post('http://127.0.0.1:5000/putTag', {activeId, ...this.tagInfo})
+            this.tagInfo = { type: '', text: '' }
+        }
+    },
+    created() {
+        this.textContext = '#' + new Date().toString().split(" ").slice(0, 4).join("") + '#\n'
+        this.getAllActives()
+    }
 }
 </script>
 
-<style scoped>
+<style
+        lang="scss"
+        scoped
+>
+    .main-body {
+        margin: 0 auto;
+        width: calc(60% + (1440px - 100%) / 3);
+        padding-top: 200px;
+        height: 100%;
 
+        &__head h1 {
+            margin: 0;
+        }
+
+        &__head p {
+            margin: 0;
+            font-weight: 300;
+        }
+
+        &__body {
+            margin-top: 38px;
+        }
+
+        .main-body__body__avator {
+            border-radius: 50%;
+            height: 58px;
+            width: 58px;
+            display: inline-block;
+            background-image: url("../static/images/WechatIMG443.jpeg");
+            background-position: center;
+            background-size: cover;
+        }
+
+        .body__recent {
+            display: flex;
+            position: relative;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .main-body__body__message {
+            position: relative;
+            width: calc(100% - 78px);
+            left: 20px;
+            border: 1px #393f4c solid;
+            border-radius: 6px;
+            padding: 12px;
+            box-sizing: border-box;
+
+        }
+
+        .main-body__body__message:after {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-width: 10px;
+            border-top-width: 7px;
+            border-bottom-width: 7px;
+            left: -20px;
+            top: 15px;
+            border-style: solid;
+            content: '\00a0';
+            border-color: transparent #393f4c transparent transparent;
+        }
+
+        /*.main-body__body__message:before{*/
+        /*    position: absolute;*/
+        /*    width:0;*/
+        /*    height: 0;*/
+        /*    border-width: 10px;*/
+        /*    top: 2px;*/
+        /*    left: 2px;*/
+        /*    border-style: solid;*/
+        /*    content: '\00a0';*/
+        /*    border-color:  transparent #282c35 transparent transparent;*/
+        /*    z-index: 999;*/
+        /*}*/
+        .main-body__body__message h4, p {
+            margin: 0 auto;
+        }
+
+        .main-body__body__message .message__title {
+            margin: 0 16px 0 0;
+            font-size: 15px;
+        }
+
+        .message__text {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .main-body__body__mark {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+        .input-area /deep/ .el-textarea__inner {
+            background-color: transparent;
+        }
+    }
+
+    /deep/.el-radio{
+        margin-right: 6px !important;
+    }
+
+    /deep/.el-radio__label{
+        padding-left: 2px;
+    }
+
+    @media screen and (max-width: 600px) {
+        .main-body {
+            width: 90%;
+            padding-top: 84px;
+        }
+
+    }
 </style>

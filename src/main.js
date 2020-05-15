@@ -20,6 +20,14 @@ Vue.prototype.$axios = axios
 axios.defaults.baseURL = 'https://www.yezhikang.site:8081/';
 Vue.use(ElementUI)
 Vue.prototype.$marked = marked;
+Vue.filter('changeToMDY', (value) => {
+  return new Date(value).toString().split(" ").slice(0,4).join(" ")
+})
+
+Vue.filter('changeToMDY_OutTrim', (value) => {
+  return '#' + new Date(value).toString().split(" ").slice(0,4).join("") + '#'
+})
+
 
 Vue.directive('highlight',function (el) {
   let highlight = el.querySelectorAll('pre code');
