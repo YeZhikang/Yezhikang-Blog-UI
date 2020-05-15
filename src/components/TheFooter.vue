@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="end" >
-            <div style="display: flex;align-items: center">
-                <router-link class="rl" :to="{name:'pages'}">Articles</router-link>
-                <router-link class="rl pl25" :to="{name:'MobileIndex'}">ToushiJing</router-link>
-                <router-link class="rl pl25" :to="{name:'contact'}">Contact  <i class="el-icon-paperclip"></i></router-link>
+            <div style="display: flex;align-items: center;font-weight: 400">
+                <router-link class="rl" :to="{name:'Home'}">首页</router-link>
+                <router-link class="rl pl10" :to="{name:'pages'}">Articles</router-link>
+                <router-link class="rl pl10" :to="{name:'contact'}">Contact  <i class="el-icon-paperclip"></i></router-link>
             </div>
             <div>
                 <a class="rl" href="https://www.github.com/Yezhikang">
@@ -117,5 +117,9 @@ export default {
         .end .pl25{
             padding-left: 10px;
         }
+    }
+
+    .pl10{
+        padding-left: 10px;
     }
 </style>

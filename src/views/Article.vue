@@ -1,19 +1,18 @@
 <template>
     <div style="width: 100%">
-        <the-nav></the-nav>
         <div class="main">
             <div style="display: flex;align-items: center;width: 100%">
                 <img class="imgLogo" :src="pngCate[category]">
                 <div>
-                    <h1 class="title" style="margin-bottom: 0;margin-top: 0;color: black;">{{title}}</h1>
+                    <h1 class="title" style="margin-bottom: 0;margin-top: 0;">{{title}}</h1>
                     <span style="font-size: 13px;color: darkgrey;line-height: 1">{{time}} /
               <span style="font-weight: 600;font-size: 15px"> share</span></span><br>
                     <el-tag style="margin-top: 20px" type="primary" size="mini" plain>{{category}}</el-tag>
-                    <el-tag style="margin-top: 20px" type="warning" size="mini" plain>Blog</el-tag>
+                    <el-tag style="margin-top: 20px;margin-left: 6px" type="warning" size="mini" plain>Blog</el-tag>
                     <el-tag v-if="userName=== 'super'" @click="deleteBlog()" type="danger" size="mini">删除博客</el-tag>
                 </div>
             </div>
-            <div class="htmlBlock" style="color: black" v-html="mdHtml" v-highlight></div>
+            <div class="htmlBlock" v-html="mdHtml" v-highlight></div>
             <!--        <el-card>-->
             <!--          <div style="display: flex;align-items: center;justify-content: space-around;font-size: 16px;line-height: 1.8">-->
             <!--            <img src="../assets/indexLogo.png" class="imgLogo2">-->
@@ -31,8 +30,6 @@
 </template>
 
 <script>
-import TheNav from "../components/TheNav";
-import '../static/css/font.scss'
 import TheFooter from "../components/TheFooter";
 import JavaScript from '../assets/blogs/javascript.png'
 import React from '../assets/blogs/react.png'
@@ -49,7 +46,7 @@ import { Loading } from 'element-ui';
 
 export default {
     name: "Article",
-    components: {TheFooter, TheNav},
+    components: {TheFooter},
     data(){
         return{
             mdHtml:"",
@@ -133,6 +130,14 @@ export default {
         display: block;
         margin: 0 auto;
 
+    }
+
+    .htmlBlock >>> p{
+        font-size: 14px;
+    }
+
+    .htmlBlock >>> a{
+        color: #3a8ee6;
     }
 
 
@@ -223,7 +228,7 @@ export default {
         top: 0px;
         left: 0;
         height: 0;
-        background: #e1e1e1;
+        background: rgb(55,55,55);
         color:#c2c3c4;
         width:100%;
         font-size:18px;
@@ -231,7 +236,7 @@ export default {
         line-height:0;
         padding:14px 5px;
         text-indent:4px;
-        letter-spacing:-6px;
+        letter-spacing:4px;
         box-sizing:border-box;
         border-top-right-radius: 6px;
         border-top-left-radius: 6px;

@@ -1,14 +1,13 @@
 <template>
   <div class="main">
-    <the-nav></the-nav>
     <div class="main-body">
       <div class="welcome-block">
-        <div class="intro" style="text-align: left;color: black">
+        <div class="intro">
           <h1>Hey,我是叶志康</h1>
           <p>我是一个前端开发者，爱好编程。对 <code class="pjfont">JavaScript</code> , <code class="pjfont">Python</code> , <code class="pjfont">Node.js</code> 很感兴趣。</p>
           <div style="margin-top: 24px">
-            <el-button @click="urlRedirect({name:'MobileIndex'})" type="primary" size="mini">Vision DataAnalysis <i class="el-icon-search"></i></el-button>
-            <el-button type="warning" size="mini" @click="urlRedirect({name:'me'})">About Me</el-button>
+            <el-button class="index-button index-button--primary" @click="urlRedirect({name:'MobileIndex'})" type="primary" size="mini">Articles</el-button>
+            <el-button class="index-button index-button--warning" type="warning" size="mini" @click="urlRedirect({name:'me'})">About Me</el-button>
           </div>
         </div>
         <div class="welcome-card">
@@ -23,13 +22,13 @@
       <div class="recent-blog">
         <div class="fa">
           <h2>Recent Articles</h2>
-          <el-button @click="urlRedirect({name:'pages'})" style="margin-left: 25px" type="info" size="mini">View all</el-button>
+          <el-button @click="urlRedirect({name:'pages'})" class="index-button--info" style="margin-left: 25px" type="info" size="mini">View all</el-button>
         </div>
         <div class="article-list">
           <div v-for="(article,index) in articleLst" :key="index" class="fa" style="margin-top: 25px">
             <!--            <img :src="article.img" alt="">-->
             <img :src="pngCate[article.category]" style="width: 33px">
-            <h4 style="width: 89%;padding: 0 15px;"><router-link class="rl" :to="{name:'article',params:{hash:article.urlHash}}">{{article.file}}</router-link></h4>
+            <h4 style="width: 89%;padding: 0 15px;"><router-link class="rl" :to="{name:'articles',params:{hash:article.urlHash}}">{{article.file}}</router-link></h4>
             <div class="isnew" style="min-width: 48px"><el-tag type="warning" v-if="isNew(article.time)">New</el-tag></div>
           </div>
         </div>
@@ -46,7 +45,6 @@
 </template>
 
 <script>
-import TheNav from "../components/TheNav";
 import TheFooter from "../components/TheFooter";
 import JavaScript from '../assets/blogs/javascript.png'
 import React from '../assets/blogs/react.png'
@@ -62,7 +60,7 @@ import Tool from '../assets/blogs/Tool.png'
 
 export default {
   name: "Home",
-  components: {TheFooter, TheNav},
+  components: {TheFooter},
   data(){
     return{
       articleLst:[
@@ -115,7 +113,6 @@ export default {
   .main-body{
     width: calc( 60% + (1440px - 100%)/3)  ;
     margin: auto;
-    transition: 0.3s;
     padding-bottom: 25px;
   }
   .welcome-block{
@@ -173,7 +170,7 @@ export default {
       font-size: 24px;
     }
     .recent-blog h4{
-      font-size: 16px;
+      font-size: 15px;
     }
     .recent-blog{
       margin-top: 45px;
