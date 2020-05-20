@@ -2,15 +2,19 @@
     <div class="tags">
         <div class="tag-body">
             <div class="line" v-if="!activesArr.length"></div>
-
         </div>
         <div class="tag-body" v-for="(active,index) in activesArr" :key="index">
             <div class="line"></div>
             <div class="active">
                 <i :class="iconType(active.type)"></i>
-                <div class="active--info">{{ active.text }}</div>
+                <div class="active--info" v-html="active.text.replace(/\n/g, '<br>')"></div>
             </div>
             <div class="line" v-if="index === activesArr.length-1"></div>
+        </div>
+        <div class="tag-body" v-if="isEnd">
+            <i class="el-icon-more icon-more" style="transform: rotate(90deg)"></i>
+            <div class="line">
+            </div>
         </div>
     </div>
 </template>
@@ -27,6 +31,10 @@ export default {
         activesArr: {
             default: () => [],
             type: Array
+        },
+        isEnd: {
+            default: false,
+            type: Boolean
         }
     },
     data(){
@@ -42,7 +50,7 @@ export default {
                 case 'finished':
                     return 'el-icon-success tag-icon'
                 case 'marked':
-                    return 'el-icon-price-tag tag-icon'
+                    return 'el-icon-price-tag tag-icon reverse'
                 case 'minus':
                     return 'el-icon-remove tag-icon'
             }
@@ -109,5 +117,10 @@ export default {
         z-index: 1;
         padding-left: 20px;
         font-size: 12px;
+        word-break: break-all;
+    }
+
+    .reverse{
+        transform: rotate(180deg);
     }
 </style>

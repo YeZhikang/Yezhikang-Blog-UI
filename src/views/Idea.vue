@@ -7,10 +7,12 @@
         <div class="main-body__body">
             <div
                 class="body__recent"
-                v-for="active in actives"
+                v-for="(active,index) in actives"
                 :key="active.activeId"
             >
-                <div class="main-body__body__avator"></div>
+                <div class="main-body__body__avator">
+                    <img :src="emojiArr[active.index]" class="add-emoji"/>
+                </div>
                 <div class="main-body__body__message">
                     <h4
                         class="message__title"
@@ -20,6 +22,18 @@
                         class="message__text"
                         v-html="active.main"
                     ></p>
+
+                    <el-popover
+                        placement="top"
+                        width="160"
+                        v-model="active.isDeleteVis">
+                        <p>是否要删除该想法？</p>
+                        <div style="text-align: right; margin: 0">
+                            <el-button size="mini" type="text" @click="active.isDeleteVis = false">取消</el-button>
+                            <el-button type="primary" size="mini" @click="deleteIdea(active, active.activeId)">确定</el-button>
+                        </div>
+                        <i style="position:absolute;bottom: 2px;right: 10px" class="el-icon-more-outline" slot="reference"></i>
+                    </el-popover>
                 </div>
                 <el-popover
                     v-if="!isFinished(active)"
@@ -66,7 +80,7 @@
                         <el-button
                             type="primary"
                             size="mini"
-                            @click="handleSubmitTag(active.activeId)"
+                            @click="handleSubmitTag(active,active.activeId)"
                         >确定
                         </el-button>
                     </div>
@@ -83,10 +97,13 @@
                 >
                     <i class="el-icon-circle-check"></i>
                 </div>
-                <the-tags :activesArr="active.tagArr"/>
+                <the-tags :is-end="index === actives.length-1" :activesArr="active.tagArr"/>
             </div>
         </div>
-        <div class="main-body__foot" style="position:relative;">
+        <div
+            class="main-body__foot"
+            style="position:relative;"
+        >
             <div
                 class="body__recent"
                 style="width: 100%"
@@ -94,19 +111,33 @@
                 <div class="main-body__body__avator--add">
                     <el-popover
                         placement="top"
-                        width="160"
-                        v-model="visible">
-                        <p>这是一段内容这是一段内容确定删除吗？</p>
-                        <div style="text-align: right; margin: 0">
-                            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
-                            <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
+                        v-model="emojiInfo.visible"
+                    >
+                        <div class="example-imgarr">
+                            <img
+                                @click="handleChangeEmoji(emoji,index)"
+                                class="avatar-example"
+                                v-for="(emoji,index) in emojiArr"
+                                :key="emoji"
+                                :src="emoji"
+                            >
                         </div>
-                        <div slot="reference" style="text-align: center;line-height: 1">
-                            <i style="font-size: 12px" class="el-icon-plus"></i><br/>
-                            <span style="font-size: 12px;font-weight: 300;width: 80%">表情</span>
+                        <div
+                            slot="reference"
+                            style="text-align: center;line-height: 1"
+                        >
+                            <template v-if="!emojiInfo.isChooseEmoji">
+                                <i
+                                    style="font-size: 12px"
+                                    class="el-icon-plus"
+                                ></i><br/>
+                                <span style="font-size: 12px;font-weight: 300;width: 80%">表情</span>
+                            </template>
+                            <img v-else :src="emojiInfo.emojiSrc" class="add-emoji">
                         </div>
                     </el-popover>
                 </div>
+
                 <el-input
                     class="input-area main-body__body__message--add"
                     :autosize="{ minRows: 4, maxRows: 6}"
@@ -114,7 +145,7 @@
                     v-model="textContext"
                 ></el-input>
             </div>
-<!--            <div class="emoji-part"></div>-->
+            <!--            <div class="emoji-part"></div>-->
 
         </div>
         <el-button
@@ -125,12 +156,16 @@
             @click="handleSubmit"
         >确 定
         </el-button>
-        <the-footer/>
+        <the-footer style="padding-bottom: 20px"/>
     </div>
 </template>
 
 <script>
 import TheTags from "../components/TheTags";
+import img0 from '../static/images/WechatIMG440.jpeg'
+import img1 from '../static/images/WechatIMG85051.jpeg'
+import img2 from '../static/images/WechatIMG85056.jpeg'
+import img3 from '../static/images/WechatIMG85060.jpeg'
 
 
 export default {
@@ -145,17 +180,45 @@ export default {
             },
             actives: [],
             emojiArr: [
-
+                img0,
+                img1,
+                img2,
+                img3
             ],
+            emojiInfo: {
+                isChooseEmoji: false,
+                emojiSrc: null,
+                visible: false,
+                index: null,
+            }
         }
     },
     computed: {},
     methods: {
         async handleSubmit() {
+            console.log(this.emojiInfo)
+            if(this.emojiInfo.index === null) {
+                this.$message({
+                    type: 'error',
+                    message: '请选择头像'
+                })
+                return
+            }
             await this.$axios.post('/setActive', {
                 textContext: this.textContext,
-                createdAt: new Date().toLocaleDateString()
+                createdAt: new Date().toLocaleDateString(),
+                index: this.emojiInfo.index
             })
+
+            this.textContext = null
+            this.emojiInfo = {
+                isChooseEmoji: false,
+                emojiSrc: null,
+                visible: false,
+                index: null,
+            }
+
+            await this.getAllActives()
         },
         async getAllActives() {
             const res = await this.$axios.get('/getActive')
@@ -165,6 +228,8 @@ export default {
                 console.log(item.topicLst)
                 item.titleHtml = item.topicLst.map(i => `<i class="topic-theme">${ i }</i>`).join(',')
                 item.visible = false
+                item.main = item.main.replace(/\n/g, '<br>')
+                item.isDeleteVis = false
             }
             this.actives = dataSource
         },
@@ -177,9 +242,23 @@ export default {
             }
             return false
         },
-        async handleSubmitTag(activeId) {
+        async handleSubmitTag(active,activeId) {
             await this.$axios.post('/putTag', { activeId, ...this.tagInfo })
+            await this.getAllActives()
+            active.visible = false
             this.tagInfo = { type: '', text: '' }
+        },
+        handleChangeEmoji(emoji, index){
+            this.emojiInfo.isChooseEmoji = true;
+            this.emojiInfo.emojiSrc = emoji
+            this.emojiInfo.visible = false;
+            this.emojiInfo.index = index
+            console.log(index)
+        },
+        async deleteIdea(active, activeId){
+            await this.$axios.post('/deleteIdea', { activeId})
+            active.isDeleteVis = false
+            await this.getAllActives()
         }
     },
     created() {
@@ -197,8 +276,8 @@ export default {
         margin: 0 auto;
         width: calc(60% + (1440px - 100%) / 3);
         padding-top: 200px;
-        height: 100%;
-
+        /*height: 100%;*/
+        box-sizing: border-box;
         &__head h1 {
             margin: 0;
         }
@@ -217,12 +296,12 @@ export default {
             height: 58px;
             width: 58px;
             display: inline-block;
-            background-image: url("../static/images/WechatIMG443.jpeg");
+            /*background-image: url("../static/images/WechatIMG443.jpeg");*/
             background-position: center;
             background-size: cover;
 
 
-            &--add{
+            &--add {
                 border-radius: 50%;
                 height: 58px;
                 width: 58px;
@@ -243,6 +322,12 @@ export default {
             flex-wrap: wrap;
         }
 
+        .add-emoji {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
         .main-body__body__message {
             position: relative;
             width: calc(100% - 78px);
@@ -252,7 +337,7 @@ export default {
             padding: 12px;
             box-sizing: border-box;
 
-            &--add{
+            &--add {
                 position: relative;
                 width: calc(100% - 78px);
                 left: 20px;
@@ -327,11 +412,11 @@ export default {
         }
 
 
-        .main-body__foot{
+        .main-body__foot {
             display: flex;
         }
 
-        .emoji-part{
+        .emoji-part {
             height: 80px;
             width: 80px;
             background-color: white;
@@ -350,6 +435,33 @@ export default {
 
     .topic-theme {
 
+    }
+
+    /deep/ .example-imgarr {
+        padding: 12px;
+
+        /deep/ img {
+            width: 30px;
+            height: 30px;
+
+        }
+    }
+
+    /deep/ .avatar-example {
+        width: 45px;
+        height: 45px;
+        padding-right: 8px;
+    }
+
+    .footer /deep/ .end{
+    }
+
+    .line{
+
+            height: 30px;
+            width: 2px;
+            background-color: #393f4c;
+            margin: 0 auto;
     }
 
 

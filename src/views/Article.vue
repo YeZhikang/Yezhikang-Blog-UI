@@ -4,12 +4,12 @@
             <div style="display: flex;align-items: center;width: 100%">
                 <img class="imgLogo" :src="pngCate[category]">
                 <div>
-                    <h1 class="title" style="margin-bottom: 0;margin-top: 0;">{{title}}</h1>
+                    <h1 class="title" style="word-break:break-all;margin-bottom: 0;margin-top: 0;">{{title}}</h1>
                     <span style="font-size: 13px;color: darkgrey;line-height: 1">{{time}} /
               <span style="font-weight: 600;font-size: 15px"> share</span></span><br>
                     <el-tag class="index-button--primary" style="margin-top: 20px" type="primary" size="mini" plain>{{category}}</el-tag>
                     <el-tag class="index-button--warning" style="margin-top: 20px;margin-left: 6px" type="warning" size="mini" plain>Blog</el-tag>
-                    <el-tag v-if="userName=== 'super'" @click="deleteBlog()" type="danger" size="mini">删除博客</el-tag>
+                    <el-tag v-if="userName === 'super'" @click="deleteBlog()" type="danger" size="mini">删除博客</el-tag>
                 </div>
             </div>
             <div class="htmlBlock" v-html="mdHtml" v-highlight></div>
@@ -141,9 +141,6 @@ export default {
 
     }
 
-    .htmlBlock >>> p{
-        font-size: 14px;
-    }
 
     .htmlBlock >>> a{
         color: #3a8ee6;
@@ -326,6 +323,10 @@ export default {
         }
         >>>blockquote p{
             padding-left: 10px;
+        }
+
+        .htmlBlock >>> p, >>> li, >>>table{
+            font-size: 14px;
         }
     }
 </style>

@@ -4,7 +4,7 @@
             <div style="display: flex;align-items: center;font-weight: 400">
                 <router-link class="rl" :to="{name:'Home'}">首页</router-link>
                 <router-link class="rl pl10" :to="{name:'pages'}">Articles</router-link>
-                <router-link class="rl pl10" :to="{name:'contact'}">Contact  <i class="el-icon-paperclip"></i></router-link>
+                <router-link class="rl pl10" :to="{name:'idea'}">Idea<i class="el-icon-ice-drink"></i></router-link>
             </div>
             <div>
                 <a class="rl" href="https://www.github.com/Yezhikang">

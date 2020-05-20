@@ -13,6 +13,10 @@ import FrontGround from "../views/int-management-homework/FrontGround";
 import EditNews from "../views/int-management-homework/EditNews";
 import CreateNews from "../views/int-management-homework/CreateNews";
 import Idea from "../views/Idea";
+import playground from "../views/playground";
+import toHoneyIndex from "../views/to-honey/toHoneyIndex";
+import AcademyModel from "../components/academy/AcademyModel";
+import AcademyList from "../components/academy/AcademyList";
 
 Vue.use(VueRouter)
 
@@ -76,6 +80,26 @@ const routes = [
                 component: CreateNews
             }
         ]
+    },
+    {
+        name: 'playground',
+        path: '/playground',
+        component: playground
+    },
+    {
+        name: 'playground2',
+        path: '/playground2',
+        component: AcademyModel
+    },
+    {
+        name: 'playground3',
+        path: '/playground3',
+        component: AcademyList
+    },
+    {
+        name: 'to-honey',
+        path: '/to-honey',
+        component: toHoneyIndex
     },
 ]
 

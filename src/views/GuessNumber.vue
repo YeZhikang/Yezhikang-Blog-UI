@@ -65,7 +65,7 @@ export default {
             guessSit: {
                 isShow: false,
                 status: null,
-                count: 0
+                count: 0,
             }
         }
     },
