@@ -1,8 +1,9 @@
 <template>
     <div>
-        <div class="fb">
+        <div class="fb" style="flex-wrap: wrap">
             <div class="model-container">
-                <h1 class="model-title">学院简介 <span class="article" style="color: darkgrey">APRIL 9, 2020</span> <span style="float: right;line-height: 46px" class="article article-red">About ABC / 学院简介</span></h1>
+                <div class="model-des"><i class="el-icon-link"></i></div>
+                <h1 class="model-title">{{ item }} <span class="article" style="color: darkgrey;">APRIL 9, 2020</span> <span style="float: right;line-height: 46px" class="article article-red">{{ par }} / {{ item }}</span></h1>
                 <p class="article"> <span class="pjfont">阿里巴巴商学院</span>成立于2008年10月31日，是杭州师范大学与阿里巴巴集团共建的校企合作学院，杭师大著名校友、原阿里巴巴集团董事局主席马云先生出任学院首任理事长、院长。学院以培养数字经济时代创新型优秀管理人才和创业者为使命，致力于商业和管理理论创新，努力成为新型商学院的标杆。学院现任院长是原阿里巴巴集团学术委员会主任曾鸣教授。</p>
                 <p class="article">阿里巴巴商学院以在互联网新经济领域的人才培养、研究、社会服务和创新创业教育为特色，特别是在信息经济、智能商业、电子商务服务、大数据分析、社交网络、网络营销等方向上优势明显。</p>
                 <p class="article">学院设有电子商务、国际商务、市场营销、物流管理等四个本科专业，电子商务专业为国家一流本科专业建设点、省级优势专业；国际商务专业为国家一流本科专业建设点、省级特色专业；拥有管理科学与工程一级学科硕士点、国际商务专业硕士点、软件工程专业硕士点（联合）以及服务科学与管理、计算机应用技术（联合）等两个二级学科硕士点；学院建设了一支包括长江学者、教育部新世纪人才、教育部教指委委员副主任委员、国家优青、钱江学者、浙江省杰青在内专职教师队伍，80%以上具有博士学位，还拥有一支以阿里巴巴集团高管、专家和社会各界专家学者组成的兼职教师队伍。目前全日制在校本科生、研究生、留学生1200余名。</p>
@@ -14,7 +15,7 @@
                     <span style="font-size: 12px;line-height: 0">LAST MODIFIED | APR 9, 2020</span>
                 </p>
             </div>
-            <side-bar style="width:  26%;"/>
+            <side-bar class="sidebar"/>
         </div>
         <academy-footer/>
     </div>
@@ -24,9 +25,32 @@
 <script>
 import AcademyFooter from "./AcademyFooter";
 import SideBar from "./tools/SideBar";
+import {checkBack} from "../../static/javascript/data";
+
 export default {
     name: "AcademyModel",
-    components: { SideBar, AcademyFooter }
+    components: { SideBar, AcademyFooter },
+    data(){
+        return{
+            par: '',
+            item: ''
+        }
+    },
+    beforeRouteEnter(to,from,next){
+        next(vm => {
+            const {par, item} = vm.$route.params
+            const {parName, name} = checkBack(par, item)
+            vm.par = parName
+            vm.item = name
+        })
+    },
+    beforeRouteUpdate(to,from,next){
+        const {par, item} = to.params
+        const {parName, name} = checkBack(par, item)
+        this.par = parName
+        this.item = name
+        next()
+    }
 }
 </script>
 
@@ -34,7 +58,8 @@ export default {
     .model-container{
         width: 53%;
         margin-left: 11%;
-        padding: 100px 0;
+        padding: 0 0 100px;
+        position: relative;
         .article{
             font-size: 16px;
             line-height: 1.8;
@@ -66,11 +91,38 @@ export default {
     }
 
     .model-title{
+        margin-top: 0;
+        padding-top: 130px;
         font-weight: 300;
         letter-spacing: 2px;
         padding-left: 18px;
-        border-left: 6px solid orange;
+        border-left: 1px solid orange;
         margin-bottom: 62px;
+    }
+
+    .model-des{
+        position: absolute;
+        top:65px;
+        padding: 2px 5px;
+        background: orange;
+        color: white;
+        border-radius: 50%;
+        left: -13px;
+    }
+
+    .sidebar{
+        width: 26%;
+    }
+
+    @media screen and (max-width: 800px) {
+        .sidebar{
+            width: 100%;
+            border-top: 1px solid rgb(231, 231, 231);
+        }
+
+        .model-container{
+            width: 80%;
+        }
     }
 
 </style>

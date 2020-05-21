@@ -21,8 +21,8 @@
     watch:{
       $route:{
         handler: function (val) {
-          if(val.path.includes('mis') || val.path.includes('playground') || val.path.includes('to-honey')){
-            if(val.path.includes('playground') ){
+          if(val.path.includes('mis') || val.path.includes('ali') || val.path.includes('to-honey')){
+            if(val.path.includes('ali') ){
               this.isAcademy = true
             }
             this.isBlog = false;
@@ -40,7 +40,7 @@
         },
         immediate:true
       }
-    }
+    },
   }
 </script>
 <style>

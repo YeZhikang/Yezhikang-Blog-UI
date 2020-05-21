@@ -44,7 +44,7 @@ export default {
     .adv-container{
         position: relative;
         .adv-card{
-            width: 84vw;
+            width: 84%;
             height: 80px;
             position: absolute;
             top: 40px;
@@ -75,5 +75,18 @@ export default {
             clip-path: polygon(0 0,100% 0,100% 100%);
         }
 
+    }
+
+    @media screen and (max-width: 800px){
+        .adv-card__unit{
+            font-size: 16px !important;
+            flex-shrink: 0;
+            padding: 0 23px;
+        }
+
+        .adv-card{
+            overflow: scroll;
+
+        }
     }
 </style>

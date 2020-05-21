@@ -142,4 +142,26 @@ export default {
             -webkit-line-clamp: 3;
         }
     }
+
+    @media screen and (max-width: 800px){
+
+        .new-image{
+            width: 140px;
+            height: 90px;
+        }
+
+        .new-active-title{
+            font-size: 16px !important;
+        }
+
+        .new-active-main{
+            font-size: 12px !important;
+            margin-top: 5px !important;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 2 !important;
+        }
+    }
 </style>

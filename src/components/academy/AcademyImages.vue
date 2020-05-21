@@ -1,5 +1,5 @@
 <template>
-    <el-carousel height="600px">
+    <el-carousel class="carousel">
         <el-carousel-item
             v-for="(item,index) in bgArr"
             :key="index"
@@ -16,7 +16,6 @@
                     <h1>{{ item.title }}</h1>
                     <p>{{ item.main }}</p>
                 </div>
-
             </div>
         </el-carousel-item>
     </el-carousel>
@@ -38,7 +37,6 @@ export default {
                     imgURL: 'http://abs.hznu.edu.cn/upload/resources/image/2020/04/05/7564938.jpg',
                     title: 'The Growth Of Taobao',
                     main: 'Over It is hidden , how about it is a apple banana orange Over It is hidden , how about it is a apple banana orange Over It is hidden , how about it is a apple banana orange  Over It is hidden , how about it is a apple banana orange'
-
                 },
             ]
         }
@@ -46,7 +44,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .bg {
         position: relative;
         width: 100%;
@@ -81,5 +79,42 @@ export default {
         -webkit-box-orient: vertical;
         text-overflow: ellipsis;
         -webkit-line-clamp: 3;
+    }
+
+    .carousel /deep/ .el-carousel__container{
+        height: 600px;
+    }
+
+    @media screen and (max-width: 800px){
+        .carousel /deep/ .el-carousel__container{
+            height: 320px;
+        }
+
+        .title--right{
+            padding: 10px 18px;
+            right: 10px;
+            top: 20px;
+            width: 180px;
+        }
+
+        .title--left{
+            padding: 10px 18px;
+            left: 10px;
+            bottom: 20px;
+            width: 180px;
+        }
+
+        .title--left h1,.title--right h1{
+            font-size: 16px;
+        }
+
+        .title--left p,.title--right p{
+            font-size: 12px;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 2;
+        }
     }
 </style>

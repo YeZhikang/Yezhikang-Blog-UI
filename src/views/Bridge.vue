@@ -1,10 +1,19 @@
 <template>
-    $END$
+    <div></div>
 </template>
 
 <script>
 export default {
-    name: "bridge"
+    name: "bridge",
+    created() {
+        const {params} = this.$route
+
+        this.$router.push({
+            name: 'ali-check',
+            params
+        })
+
+    }
 }
 </script>
 

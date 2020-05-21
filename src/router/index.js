@@ -17,6 +17,7 @@ import playground from "../views/playground";
 import toHoneyIndex from "../views/to-honey/toHoneyIndex";
 import AcademyModel from "../components/academy/AcademyModel";
 import AcademyList from "../components/academy/AcademyList";
+import Bridge from "../views/Bridge";
 
 Vue.use(VueRouter)
 
@@ -82,18 +83,18 @@ const routes = [
         ]
     },
     {
-        name: 'playground',
-        path: '/playground',
+        name: 'Ali-Business-School-Website',
+        path: '/ali-business-school',
         component: playground
     },
     {
-        name: 'playground2',
-        path: '/playground2',
+        name: 'ali-read',
+        path: '/ali-business-school/:par/:item',
         component: AcademyModel
     },
     {
-        name: 'playground3',
-        path: '/playground3',
+        name: 'ali-check',
+        path: '/ali-business-school/:par/:item',
         component: AcademyList
     },
     {
@@ -101,6 +102,11 @@ const routes = [
         path: '/to-honey',
         component: toHoneyIndex
     },
+    {
+        name: 'bridge',
+        path: '/bridge/:par/:item',
+        component: Bridge
+    }
 ]
 
 const router = new VueRouter({

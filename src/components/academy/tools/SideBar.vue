@@ -1,6 +1,6 @@
 <template>
     <div class="side-bar">
-        <div style="width: 80%">
+        <div class="main-board" >
             <div class="logo" style="text-align: center">
                 <img
                     style="width: 220px"
@@ -68,6 +68,8 @@ export default {
     .sidebar-link{
         line-height: 2.2;
         font-size: 16px;
+        cursor: pointer;
+        letter-spacing: 1px;
     }
 
     .article{
@@ -98,5 +100,25 @@ export default {
         letter-spacing: 1px;
         border-right: 1px solid #d7d5d5;
         padding-right: 6px;
+    }
+
+    .sidebar-link:hover{
+        color: #fb7d1b;
+
+    }
+
+    .main-board{
+        width: 80%;
+    }
+    @media screen and (max-width: 800px) {
+        .main-board{
+            width: 100%;
+        }
+
+        /*.ml60{*/
+        /*    margin: 0 auto;*/
+        /*    text-align: center;*/
+        /*    width: 60%;*/
+        /*}*/
     }
 </style>

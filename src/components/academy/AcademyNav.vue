@@ -1,10 +1,11 @@
 <template>
     <div class="nav">
         <div class="nav__head">
-            <div class="nav__link"><i class="el-icon-suitcase-1"></i> 学院主页</div>
-            <div class="nav__link"><i class="el-icon-box"></i> 学院办公网</div>
-            <div class="nav__link"><i class="el-icon-medal"></i> 人才招聘</div>
-            <div class="nav__link"><i class="el-icon-user"></i> Login</div>
+            <div class="nav__link">阿里巴巴商学院</div>
+            <div class="nav__link nav__link__b"><i class="el-icon-suitcase-1"></i> 学院主页</div>
+            <div class="nav__link nav__link__b"><i class="el-icon-box"></i> 学院办公网</div>
+            <div class="nav__link nav__link__b"><i class="el-icon-medal"></i> 人才招聘</div>
+            <div class="nav__link nav__link__b"><i class="el-icon-user"></i> Login</div>
             <div class="nav__search">
                 <input
                     placeholder="Search"
@@ -25,11 +26,13 @@
             >
             <div class="body__link-container">
                 <div
-                    class="nav__link--body"
+                    :class="{'nav__link--body':true, 'inside-link--active': link.name === insideNav.name}"
                     @mouseover="handleCheck(link)"
                     @mouseout="handleOut()"
+                    @click="handlePush(link, link.links[0])"
                     v-for="link in bodyNavLinks"
                     :key="link.name"
+
                 >
                     {{ link.name }}
                 </div>
@@ -112,6 +115,7 @@ import bg1 from '../../static/images/academy/nav-overview-about.jpg'
 import bg2 from '../../static/images/academy/nav-overview-academics.jpg'
 import bg3 from '../../static/images/academy/nav-overview-admissions.jpg'
 import bg4 from '../../static/images/academy/nav-overview-engagement.jpg'
+import { checkBack, checkTranslate } from "../../static/javascript/data";
 
 export default {
     name: "AcademyNav",
@@ -277,7 +281,6 @@ export default {
     },
     methods: {
         handleCheck(link) {
-            console.log('s')
             this.isCheckDetail = true;
             this.currentNav = link
         },
@@ -289,39 +292,83 @@ export default {
             this.isCheckDetail = false
         },
         handlePush(currentNav, link) {
-            let name;
+            let name, params;
+            let transParName, transName
+            if(link){
+                const checkObj = checkTranslate(currentNav.name,link.title)
+                transParName = checkObj.transParName
+                transName = checkObj.transName
+            }
             switch (currentNav.name) {
                 case undefined:
-                    name = 'playground'
+                    name = 'Ali-Business-School-Website'
                     this.insideLink = ''
                     this.insideNav = ''
                     this.isInside = false
                     break
                 case 'About ABC':
-                    name = 'playground2'
+                    name = 'ali-read'
+                    params = {
+                        par: transParName,
+                        item: transName
+                    }
                     this.insideNav = currentNav
                     this.insideLink = link
                     this.isInside = true
                     break
                 default:
-                    name = 'playground3'
+                    name = 'ali-check'
+                    params = {
+                        par: transParName,
+                        item: transName
+                    }
                     this.insideNav = currentNav
                     this.insideLink = link
                     this.isInside = true
             }
 
+
+
+            console.log(params)
             this.$router.push({
-                name: name
+                name,
+                params
             })
         }
     },
+    created(){
+
+    },
     watch: {
-        isCheckDetail: {
-            // handler: function (val) {
-            //
-            // },
-            // immediate: true
-        },
+        $route:{
+            handler: function (val) {
+                const {params} = val
+
+                if(params.par !==  'about' && this.$route.name === 'ali-read'){
+                    this.$router.push({
+                        name: 'bridge',
+                        params
+                    })
+                    return
+                }
+
+                const {parName,name} = checkBack(params.par, params.item)
+                if(parName && name){
+                    for(let item of this.bodyNavLinks){
+                        if(item.name === parName){
+                            for(let link of item.links){
+                                if(link.title === name){
+                                    this.insideLink = link
+                                    this.insideNav = item
+                                    this.isInside = true
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            immediate: true
+        }
     }
 }
 </script>
@@ -349,7 +396,7 @@ export default {
         align-items: center;
         justify-content: flex-end;
         color: white;
-        padding: 0 8vw;
+        padding: 0 8%;
         font-size: 12px;
 
         .nav__link:nth-child(4) {
@@ -388,6 +435,7 @@ export default {
         font-size: 20px;
         font-weight: 400;
         color: rgb(44, 44, 44);
+        /*font-family: 'Roma';*/
         /*font-family: "Heiti SC", Arial;*/
         cursor: pointer;
         transition: 0.2s;
@@ -401,7 +449,7 @@ export default {
     }
 
     .nav__body {
-        padding: 14px 8vw;
+        padding: 14px 8%;
         display: flex;
         align-items: center;
         position: relative;
@@ -429,11 +477,11 @@ export default {
             height: 210px;
             z-index: 5;
             background-color: white;
-            padding: 0 8vw 20px calc(8vw + 214px);
+            padding: 0 8% 20px calc(8% + 214px);
             transition: 0.3s;
             animation: collapse 0.2s;
             display: flex;
-
+            border-bottom: 1px solid rgb(233,233,233);
         }
 
         .reading {
@@ -472,7 +520,7 @@ export default {
         border: 1px solid rgb(240, 240, 240);
         display: flex;
         align-items: center;
-        padding: 0 9vw;
+        padding: 0 9%;
     }
 
     .inside-link {
@@ -481,7 +529,14 @@ export default {
         color: #5a5a5a;
         letter-spacing: 2px;
         padding-left: 26px;
+        cursor: pointer;
+        transition: 0.1s;
+
         /*border-right: 1px solid lightgrey;*/
+    }
+
+    .inside-link:hover{
+        text-decoration: underline;
     }
 
     .inside-link:last-child {
@@ -499,6 +554,48 @@ export default {
         }
         100% {
             transform: translate(0, 0);
+        }
+    }
+
+    @media screen and (max-width: 800px){
+        .inside-link__area .inside-link{
+            font-size: 12px;
+            padding: 0 6px;
+        }
+
+        .inside-link__area{
+            overflow: hidden;
+        }
+
+        .body__avatar{
+            width: 35px !important;
+            height: 35px !important;
+        }
+
+        .body__link-container{
+            margin-left: 0 !important;
+            width: auto !important;
+        }
+        .nav__link--body{
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .nav__link__b{
+            display: none !important;
+        }
+
+        .nav__body{
+            overflow: scroll;
+        }
+
+        .nav__head{
+            justify-content: flex-start !important;
+            padding: 0 8%;
+        }
+
+        .nav__link:nth-child(1){
+            padding-left: 0;
         }
     }
 </style>

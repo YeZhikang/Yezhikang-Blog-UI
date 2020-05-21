@@ -3,13 +3,13 @@
         <AcademyImages/>
         <AcademyAdv/>
         <div class="main-card">
-            <ActiveCard style="width: 47% ;z-index: 999"/>
-            <ActiveCard style="width: 47%"/>
+            <ActiveCard class="active-card-unit"/>
+            <ActiveCard style="z-index: -1" class="active-card-unit" />
         </div>
         <div class="main-des"></div>
         <div class="main-card second-card">
             <div class="bg-des"></div>
-            <ActiveCard :is-inside="false" style="width: 47%;border-bottom: 3px solid #e97419">
+            <ActiveCard :is-inside="false"  class="active-card-unit" style="border-bottom: 3px solid #e97419">
                 <template v-slot:head>
                     <div class="fa fb card-head">
                         <h1 class="card-head__title">通知公告</h1>
@@ -17,7 +17,7 @@
                     </div>
                 </template>
             </ActiveCard>
-            <ActiveCard :is-inside="false" style="width: 47%;z-index: 999;border-bottom: 3px solid #e97419">
+            <ActiveCard :is-inside="false" class="active-card-unit" style="border-bottom: 3px solid #e97419">
                 <template v-slot:head>
                     <div class="fa fb card-head">
                         <h1 class="card-head__title">信息公开</h1>
@@ -47,6 +47,7 @@ export default {
         width: 84%;
         margin: 40px auto 40px;
         display: flex;
+
         justify-content: space-between;
     }
     .second-card{
@@ -56,6 +57,11 @@ export default {
         width: 100%;
         position: relative;
         background-image: linear-gradient( rgba(233, 116, 25, 0.12),white);
+    }
+
+    .active-card-unit{
+        width: 47%;
+        z-index: 999;
     }
 
     .main-des{
@@ -90,6 +96,23 @@ export default {
         background-position: center;
         opacity: 0.2;
         z-index: -1;
+    }
+
+    @media screen and (max-width: 800px){
+        .main-card{
+            flex-wrap: wrap;
+        }
+        .active-card-unit{
+            width: 100%;
+            margin: 0 auto 30px;
+
+        }
+
+        .main-des {
+            height: 60px !important;
+        }
+
+
     }
 
 </style>
