@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div class="fb" style="flex-wrap: wrap">
+        <div
+            class="fb"
+            style="flex-wrap: wrap"
+        >
             <div class="model-container">
                 <h1 class="model-title">{{ item }}</h1>
                 <div class="model-list">
@@ -8,8 +11,12 @@
                         class="model-unit fa"
                         v-for="(newItem,i) in newsArr"
                         :key="i"
+                        @click="handlePush(newItem)"
                     >
-                        <div style="font-weight: 300;flex-shrink: 0;font-size: 14px;color: darkgrey">
+                        <div
+                            class="date"
+                            style="font-weight: 300;flex-shrink: 0;font-size: 14px;color: darkgrey"
+                        >
                             「{{ newItem.date }}」
                         </div>
                         <div class="unit-title els-1">
@@ -23,13 +30,13 @@
                 </div>
 
                 <el-pagination
-                    style="margin: 100px 0;justify-content: flex-end;display: flex"
-                    background
+                    class="pagination"
                     layout="prev, pager, next"
-                    :total="320">
+                    :total="50"
+                >
                 </el-pagination>
             </div>
-            <side-bar class="sidebar" />
+            <side-bar class="sidebar"/>
         </div>
         <academy-footer/>
     </div>
@@ -156,7 +163,25 @@ export default {
                     isPermission: false
 
                 },
-            ]
+            ].map(item => {
+                item.id = Date.now() + Math.floor(Math.random()*10000)
+                return item
+            })
+        }
+    },
+    methods:{
+        handlePush(navItem){
+            const {par, item} = this.$route.params
+            this.$router.push({
+                name: 'ali-read',
+                params: {
+                    par,
+                    item
+                },
+                query:{
+                    articleId: navItem.id
+                }
+            })
         }
     },
     watch: {
@@ -170,17 +195,17 @@ export default {
         //     immediate: true
         // }
     },
-    beforeRouteEnter(to,from,next){
+    beforeRouteEnter(to, from, next) {
         next(vm => {
-            const {par, item} = vm.$route.params
-            const {parName, name} = checkBack(par, item)
+            const { par, item } = vm.$route.params
+            const { parName, name } = checkBack(par, item)
             vm.par = parName
             vm.item = name
         })
     },
-    beforeRouteUpdate(to,from,next){
-        const {par, item} = to.params
-        const {parName, name} = checkBack(par, item)
+    beforeRouteUpdate(to, from, next) {
+        const { par, item } = to.params
+        const { parName, name } = checkBack(par, item)
         this.par = parName
         this.item = name
         next()
@@ -196,6 +221,7 @@ export default {
         width: 53%;
         margin-left: 11%;
         padding: 40px 0;
+
         .article {
             font-size: 16px;
             line-height: 1.8;
@@ -213,7 +239,7 @@ export default {
             color: #666565
         }
 
-        .sidebar{
+        .sidebar {
             width: 26%;
         }
 
@@ -225,6 +251,12 @@ export default {
             border-right: 1px solid #d7d5d5;
             padding-right: 6px;
         }
+    }
+
+    .pagination {
+        margin: 35px 0 30px;
+        justify-content: flex-end;
+        display: flex
     }
 
     .txr {
@@ -263,13 +295,30 @@ export default {
     }
 
     @media screen and (max-width: 800px) {
-        .sidebar{
+        .sidebar {
             width: 100%;
             border-top: 1px solid rgb(231, 231, 231);
         }
 
-        .model-container{
+        .model-container {
             width: 80%;
+            padding-bottom: 20px;
+        }
+
+        .model-list {
+            padding-top: 30px;
+        }
+
+        .unit-title {
+            font-size: 14px;
+        }
+
+
+        .date {
+            display: none;
+        }
+        .pagination {
+            margin: 20px auto;
         }
     }
 

@@ -342,12 +342,13 @@ export default {
     watch: {
         $route:{
             handler: function (val) {
-                const {params} = val
+                const {params,query} = val
 
-                if(params.par !==  'about' && this.$route.name === 'ali-read'){
+                if(params.par !==  'about' && this.$route.name === 'ali-read' && (!query.articleId)){
                     this.$router.push({
                         name: 'bridge',
-                        params
+                        params,
+                        query
                     })
                     return
                 }
@@ -597,5 +598,9 @@ export default {
         .nav__link:nth-child(1){
             padding-left: 0;
         }
+        .nav__closer{
+            display: none !important;
+        }
+
     }
 </style>

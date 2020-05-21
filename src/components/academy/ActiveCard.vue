@@ -25,7 +25,7 @@
             <div >
                 <div class="fa mt20" v-for="(newItem,index) in newsArr" :key="index">
                     <DateRender :time="newItem.time" />
-                    <div class="ml20">
+                    <div class="ml20 new-main">
                         <h3 style="font-size: 16px;font-weight: 400" class="els-1">{{ newItem.title }}</h3>
                         <p style="font-size: 12px;font-weight: 300" class="els-2">{{ newItem.main }}</p>
                     </div>
@@ -163,5 +163,15 @@ export default {
             text-overflow: ellipsis;
             -webkit-line-clamp: 2 !important;
         }
+
+        .new-main{
+            margin-left: 10px;
+        }
+
+
+        .active-card{
+            padding: 20px;
+        }
+
     }
 </style>

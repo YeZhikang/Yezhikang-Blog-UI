@@ -39,4 +39,16 @@ export default {
             color: #e97419;
         }
     }
+
+    @media screen and (max-width: 800px){
+        .time-render p{
+            font-size: 12px;
+        }
+
+        .date-render{
+            height: 50px;
+            width: 50px;
+            flex-shrink: 0;
+        }
+    }
 </style>

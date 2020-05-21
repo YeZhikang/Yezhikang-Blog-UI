@@ -2,7 +2,7 @@
     <div>
         <AcademyImages/>
         <AcademyAdv/>
-        <div class="main-card">
+        <div class="main-card main-card__a">
             <ActiveCard class="active-card-unit"/>
             <ActiveCard style="z-index: -1" class="active-card-unit" />
         </div>
@@ -101,6 +101,11 @@ export default {
     @media screen and (max-width: 800px){
         .main-card{
             flex-wrap: wrap;
+
+        }
+
+        .main-card__a{
+            margin-top: 80px;
         }
         .active-card-unit{
             width: 100%;

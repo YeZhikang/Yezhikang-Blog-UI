@@ -88,5 +88,10 @@ export default {
             overflow: scroll;
 
         }
+
+        .adv-des{
+            height: 70px !important;
+        }
+
     }
 </style>

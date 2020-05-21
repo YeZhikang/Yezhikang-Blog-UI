@@ -6,13 +6,13 @@
 export default {
     name: "bridge",
     created() {
-        const {params} = this.$route
-
-        this.$router.push({
-            name: 'ali-check',
-            params
-        })
-
+        const {params,query} = this.$route
+        if(!query.articleId){
+            this.$router.push({
+                name: 'ali-check',
+                params
+            })
+        }
     }
 }
 </script>
