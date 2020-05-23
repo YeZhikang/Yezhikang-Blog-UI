@@ -18,6 +18,7 @@ import toHoneyIndex from "../views/to-honey/toHoneyIndex";
 import AcademyModel from "../components/academy/AcademyModel";
 import AcademyList from "../components/academy/AcademyList";
 import Bridge from "../views/Bridge";
+import PrintOut from "../views/homework/PrintOut";
 
 Vue.use(VueRouter)
 
@@ -106,6 +107,11 @@ const routes = [
         name: 'bridge',
         path: '/bridge/:par/:item',
         component: Bridge
+    },
+    {
+        name: 'PrintOut',
+        path: '/printout',
+        component: PrintOut
     }
 ]
 

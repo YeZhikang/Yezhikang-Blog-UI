@@ -1,7 +1,7 @@
 <template>
     <div class="nav">
         <div class="nav__head">
-            <div class="nav__link">阿里巴巴商学院</div>
+            <div class="nav__link" @click="handlePush(false)">阿里巴巴商学院</div>
             <div class="nav__link nav__link__b"><i class="el-icon-suitcase-1"></i> 学院主页</div>
             <div class="nav__link nav__link__b"><i class="el-icon-box"></i> 学院办公网</div>
             <div class="nav__link nav__link__b"><i class="el-icon-medal"></i> 人才招聘</div>
@@ -407,7 +407,13 @@ export default {
 
         .nav__link {
             padding-left: 20px;
+            cursor: pointer;
         }
+
+        .nav__link:hover{
+            color: ivory;
+        }
+
 
 
         .search__box {
@@ -460,6 +466,7 @@ export default {
             width: 128px;
             position: relative;
             z-index: 100;
+            cursor: pointer;
         }
 
         .body__link-container {
