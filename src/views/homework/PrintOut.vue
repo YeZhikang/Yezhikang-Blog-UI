@@ -3,9 +3,10 @@
         style="height: 100%;"
         class="container"
     >
+        <h1 style="font-weight: 500;font-size: 28px">一维/二维/对象数组可视化</h1>
         <el-tabs
             v-model="activeName"
-            @tab-click="handleClick"
+            @tab-click="handleTabClick"
         >
             <el-tab-pane
                 label="一维数组"
@@ -45,9 +46,23 @@
                     class="input-container"
                     :ref="'input-'+data.id"
                     v-else-if="data.flag === 1"
+                    v-model="getCurrentModifyIndex(data).label"
                 />
-                  <template v-else>
-                      <input :ref="'input-key-'+data.id" placeholder="Key" style="width: 60px" class="input-container"/> <input :ref="'input-value-'+data.id" placeholder="Value" style="width: 60px" class="input-container"/>
+                  <template v-else-if="data.flag===2">
+                      <input
+                          :ref="'input-key-'+data.id"
+                          placeholder="Key"
+                          style="width: 60px"
+                          class="input-container"
+                          v-model="data.keyLabel"
+                      /> <input
+                      :ref="'input-value-'+data.id"
+                      placeholder="Value"
+                      style="width: 60px"
+                      class="input-container"
+                      v-model="data.valueLabel"
+
+                  />
                   </template>
                 <span style="margin-left: 30px">
                     <template v-if="!data.flag">
@@ -87,7 +102,7 @@
                         <el-button
                             type="text"
                             size="mini"
-                            @click="() => modify(node, data)"
+                            @click="() => handleCancel(node, data)"
                         >
                             Cancel <i class="el-icon-close"></i>
                         </el-button>
@@ -154,6 +169,7 @@ export default {
                 }]
             }],
             appendData: [],
+            modifyCache: [],
         }
     },
     methods: {
@@ -163,13 +179,14 @@ export default {
             let newChild;
             switch (this.activeName) {
                 case "dua":
-                    newChild = { id: id++, label: '<input class="input-container"/>',flag: 1 }
+                    newChild = { id: id++, label: '', flag: 1, isNew: true }
                     break
                 case 'arrayObject':
                     newChild = {
                         id: id++,
-                        label: '<input placeholder="Key" style="width: 60px" class="input-container"/> <input placeholder="Value" style="width: 60px" class="input-container"/>',
-                        flag: 2
+                        label: '',
+                        flag: 2,
+                        isNew: true
                     }
             }
             if (!data.children) {
@@ -178,29 +195,45 @@ export default {
             data.children.push(newChild);
         },
 
+        handleCancel(node, data) {
+            console.log(node, data)
+            for (let [index, item] of node.parent.data.children.entries()) {
+                if (item.id === data.id) {
+                    if (data.isNew) {
+                        node.parent.data.children.splice(index, 1)
+                    }else{
+                        node.parent.data.children.splice(index,1, {...data, flag:0})
+                    }
+                }
+            }
+            // node.parent.data.children.pop()
+
+            // node.parent.data.pop()
+            // node.parent.pop()
+        },
         remove(node) {
             const currentId = node.data.id
             console.log(node)
-            if(['dua', 'single'].includes(this.activeName)){
-                if(typeof currentId === 'string' ){
+            if (['dua', 'single'].includes(this.activeName)) {
+                if (typeof currentId === 'string') {
                     const parIndex = currentId.split('-')[0]
                     const childIndex = currentId.split('-')[1]
                     this.defaultArrData[this.activeName][parIndex].splice(childIndex, 1)
-                }else{
-                    this.defaultArrData[this.activeName].splice(currentId,1)
+                } else {
+                    this.defaultArrData[this.activeName].splice(currentId, 1)
                 }
-            }else{
-                if(typeof currentId === 'string' ){
+            } else {
+                if (typeof currentId === 'string') {
                     const parIndex = currentId.split('-')[0]
                     const childIndex = currentId.split('-')[1]
                     const currentObject = this.defaultArrData[this.activeName][parIndex]
                     Object.keys(currentObject).forEach((key, index) => {
-                        if(index === Number(childIndex)){
+                        if (index === Number(childIndex)) {
                             delete currentObject[key]
                         }
                     })
-                }else{
-                    this.defaultArrData[this.activeName].splice(currentId,1)
+                } else {
+                    this.defaultArrData[this.activeName].splice(currentId, 1)
                 }
             }
 
@@ -225,26 +258,45 @@ export default {
             }).join(',   ')
         },
 
-        modify(node, data) {
-            const currentId = node.data.id
-            if(this.activeName === 'single'){
-                this.data.splice(data.id, 1,  {id: data.id,flag: 1})
-            }else if(this.activeName === 'dua'){
-                const parIndex = Number(currentId.split('-')[0])
-                const childIndex = Number(currentId.split('-')[1])
-                console.log(this.data,childIndex,parIndex)
+        getCurrentModifyIndex(data) {
+            console.log(data)
+            let currentItem;
+            this.modifyCache.find((item) => {
+                if (item.id === data.id) {
+                    currentItem = item
+                }
+            })
 
-                this.data[parIndex].children.splice(childIndex, 1, { id: data.id, flag: 1})
-                console.log(this.data[parIndex])
-            }else{
-                const parIndex = Number(currentId.split('-')[0])
-                const childIndex = Number(currentId.split('-')[1])
-                console.log(this.data,childIndex,parIndex)
-
-                this.data[parIndex].children.splice(childIndex, 1, {id: data.id, flag: 2})
+            if (!currentItem) {
+                currentItem = { id: data.id, label: '' }
+                this.modifyCache.push(currentItem)
             }
+
+            return currentItem
         },
 
+        modify(node, data) {
+            const currentId = node.data.id
+            this.modifyCache.push(data)
+            if (this.activeName === 'single') {
+                this.data.splice(data.id, 1, { id: data.id, flag: 1, default: data.label })
+            } else if (this.activeName === 'dua') {
+                const parIndex = Number(currentId.split('-')[0])
+                const childIndex = Number(currentId.split('-')[1])
+
+                this.data[parIndex].children.splice(childIndex, 1, { id: data.id, flag: 1, label: data.label })
+            } else {
+                const parIndex = Number(currentId.split('-')[0])
+                const childIndex = Number(currentId.split('-')[1])
+                console.log(this.data, childIndex, parIndex)
+                const [keyValue, labelValue] = data.label.split(': ')
+                this.data[parIndex].children.splice(childIndex, 1, { id: data.id, flag: 2, keyLabel: keyValue, valueLabel: labelValue })
+            }
+        },
+        handleTabClick() {
+            this.handleClick()
+            this.modifyCache = []
+        },
         handleClick() {
             const arrData = this.defaultArrData[this.activeName]
             this.renderData = this.renderStandardArrHtml(arrData)
@@ -272,46 +324,46 @@ export default {
             }
             this.data = data
         },
-        handleBlur(e){
+        handleBlur(e) {
             console.log(e)
         },
-        changeData(node, data){
+        changeData(node, data) {
             const currentId = node.data.id
-            if(this.activeName === 'dua'){
-                const refData = `input-${data.id}`
+            if (this.activeName === 'dua') {
+                const refData = `input-${ data.id }`
                 const val = this.$refs[refData].value
 
-                if(typeof currentId === 'string'){
+                if (typeof currentId === 'string') {
                     const parIndex = Number(currentId.split('-')[0])
                     const childIndex = Number(currentId.split('-')[1])
                     this.defaultArrData.dua[parIndex].splice(childIndex, 1, val)
-                }else{
+                } else {
                     this.defaultArrData.dua[node.parent.data.id].push(val)
                 }
-            }else if(this.activeName === 'arrayObject'){
+            } else if (this.activeName === 'arrayObject') {
                 // const parIndex = Number(currentId.split('-')[0])
-                const refKeyData = `input-key-${data.id}`
-                const refValueData = `input-value-${data.id}`
+                const refKeyData = `input-key-${ data.id }`
+                const refValueData = `input-value-${ data.id }`
 
                 const [key, value] = [this.$refs[refKeyData].value, this.$refs[refValueData].value]
                 const currentObject = this.defaultArrData.arrayObject[node.parent.data.id]
 
-                if(typeof currentId === 'string'){
+                if (typeof currentId === 'string') {
                     const childIndex = Number(currentId.split('-')[1])
-                    Object.keys(currentObject).forEach((item,index) => {
-                        if(index === childIndex){
+                    Object.keys(currentObject).forEach((item, index) => {
+                        if (index === childIndex) {
                             delete currentObject[item]
                             currentObject[key] = value
                         }
                     })
-                }else{
+                } else {
                     currentObject[key] = value
 
                 }
-            }else{
-                const refData = `input-${data.id}`
+            } else {
+                const refData = `input-${ data.id }`
                 const val = this.$refs[refData].value
-                this.defaultArrData.single.splice(data.id,1, val)
+                this.defaultArrData.single.splice(data.id, 1, val)
             }
 
             this.handleClick()
@@ -351,6 +403,9 @@ export default {
             }
         }
 
+        /deep/ .el-tree {
+            background: transparent;
+        }
     }
 
 
