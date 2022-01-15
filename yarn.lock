@@ -4125,6 +4125,11 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.npm.taobao.org/hex-color-regex/download/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha1-TAb8y0YC/iYCs8k9+C1+fb8aio4=
 
+highlight.js@^10.0.3:
+  version "10.7.3"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.7.3.tgz#697272e3991356e40c3cac566a74eef681756531"
+  integrity sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==
+
 highlight.js@^9.6.0:
   version "9.18.1"
   resolved "https://registry.npm.taobao.org/highlight.js/download/highlight.js-9.18.1.tgz#ed21aa001fe6252bb10a3d76d47573c6539fe13c"
@@ -5159,10 +5164,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-marked@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npm.taobao.org/marked/download/marked-1.0.0.tgz?cache=0&sync_timestamp=1587458721452&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmarked%2Fdownload%2Fmarked-1.0.0.tgz#d35784245a04871e5988a491e28867362e941693"
-  integrity sha1-01eEJFoEhx5ZiKSR4ohnNi6UFpM=
+marked@^4.0.10:
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-4.0.10.tgz#423e295385cc0c3a70fa495e0df68b007b879423"
+  integrity sha512-+QvuFj0nGgO970fySghXGmuw+Fd0gD2x3+MqCWLIPf5oxdv1Ka6b2q+z9RP01P/IaKPMEramy+7cNy/Lw8c3hw==
 
 md5.js@^1.3.4:
   version "1.3.5"
@@ -8373,6 +8378,11 @@ vuex@^3.1.3:
   version "3.4.0"
   resolved "https://registry.npm.taobao.org/vuex/download/vuex-3.4.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvuex%2Fdownload%2Fvuex-3.4.0.tgz#20cc086062d750769fce1febb34e7fceeaebde45"
   integrity sha1-IMwIYGLXUHafzh/rs05/zurr3kU=
+
+wangeditor@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/wangeditor/-/wangeditor-3.1.1.tgz#fbd3c1d4976923c9edebb85b29d30b35512ad039"
+  integrity sha1-+9PB1JdpI8nt67hbKdMLNVEq0Dk=
 
 watchpack@^1.6.1:
   version "1.6.1"
