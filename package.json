@@ -12,7 +12,7 @@
     "core-js": "^3.6.4",
     "element-ui": "^2.13.1",
     "highlight.js": "^10.0.3",
-    "marked": "^1.0.0",
+    "marked": "^4.0.10",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "vue": "^2.6.11",
